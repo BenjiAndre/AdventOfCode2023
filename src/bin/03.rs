@@ -10,21 +10,21 @@ fn main(input: &str) -> (usize, usize) {
             let (start, mut symbol) = (col, None);
             while col < line.len() && line[col].is_ascii_digit() {
                 for (dr, dc) in [
+                    (0, 1),
+                    (1, 1),
+                    (1, 0),
+                    (1, -1),
+                    (0, -1),
                     (-1, -1),
                     (-1, 0),
                     (-1, 1),
-                    (0, -1),
-                    (0, 1),
-                    (1, -1),
-                    (1, 0),
-                    (1, 1),
                 ] {
                     let (nr, nc) = ((row as i32 + dr) as usize, (col as i32 + dc) as usize);
-                    let Some(&s) = lines.get(nr).and_then(|l| l.get(nc)) else {
+                    let Some(&adjacent) = lines.get(nr).and_then(|l| l.get(nc)) else {
                         continue;
                     };
-                    if s != b'.' && !s.is_ascii_digit() {
-                        symbol = Some((nr, nc, s as char));
+                    if !adjacent.is_ascii_digit() && adjacent != b'.' {
+                        symbol = Some((nr, nc, adjacent as char));
                         break;
                     }
                 }
