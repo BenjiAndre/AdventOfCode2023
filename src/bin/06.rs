@@ -21,7 +21,6 @@ fn main(input: &str) -> (usize, usize) {
     for line in input.lines() {
         let numbers: Vec<usize> = line
             .split_whitespace()
-            .skip(1)
             .filter_map(|word| word.parse().ok())
             .collect();
 
