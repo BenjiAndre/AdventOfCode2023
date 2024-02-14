@@ -1,12 +1,12 @@
-use std::{fs, process::Command, error::Error};
 use itertools::Itertools;
+use std::{error::Error, fs, process::Command};
 
 fn extract_microseconds(output: &str) -> Result<usize, Box<dyn Error>> {
     let out = output.lines().last().unwrap();
     let time = if out.ends_with("ms") {
-        out["Time: ".len()..out.len()-2].parse::<usize>()? * 1000
+        out["Time: ".len()..out.len() - 2].parse::<usize>()? * 1000
     } else {
-        out["Time: ".len()..out.len()-3].parse::<usize>()?
+        out["Time: ".len()..out.len() - 3].parse::<usize>()?
     };
     Ok(time)
 }
@@ -18,7 +18,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         .collect::<Vec<_>>();
     let mut total_time = 0;
     for day in &days {
-        let cmd = Command::new("cargo").args(["run", "--release", "--bin", day]).output()?;
+        let cmd = Command::new("cargo")
+            .args(["run", "--release", "--bin", day])
+            .output()?;
         let output = String::from_utf8(cmd.stdout)?;
         println!("Day {}:\n{}", day, output);
         total_time += extract_microseconds(&output)?;
